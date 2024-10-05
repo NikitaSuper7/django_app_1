@@ -17,7 +17,7 @@ def category(request):
 
 
 def contact(request):
-    """Пример контроллера, обрабатывающий POST-запрос."""
+    """Пример контроллера, обрабатывающий POST-запрос!"""
     if request.method == "POST":
         name = request.POST.get("name")
         email = request.POST.get("email")
