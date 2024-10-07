@@ -6,14 +6,28 @@ def main_page(request):
     """Рендерит главную страницу"""
     return render(request, template_name='catalog/main_page.html')
 
+
 def catalog(request):
     """Рендерит страницу каталога"""
     return render(request, template_name='catalog/catalog.html')
+
 
 def category(request):
     """Рендерит страницу категорий"""
     return render(request, template_name='catalog/category_page.html')
 
+
+# def pages(request):
+#     """Перелючает страницы"""
+#     if request.method == 'GET':
+#         if request.GET.get('page') == 'main':
+#             main_page(request)
+#         elif request.GET.get('page') == 'contacts':
+#             contact(request)
+#         elif request.GET.get('page') == 'category':
+#             category(request)
+#         elif request.GET.get('page') == 'catalog':
+#             catalog(request)
 
 
 def contact(request):

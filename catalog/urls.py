@@ -9,4 +9,5 @@ urlpatterns = [
     path('main_page/', views.main_page, name='main_page'),
     path('catalog/', views.catalog, name='catalog'),
     path('category/', views.category, name='category'),
+    # path('pages/', views.pages, name='pages')
 ]
