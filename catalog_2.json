@@ -1,0 +1,65 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "category_name": "Смартфон",
+      "category_description": "Здесь содержаться смартфоны всех брендов"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "category_name": "Одежда",
+      "category_description": "Одежда любого бренда. ДЛЯ ОБУВИ У НАС ОТДЕЛЬНАЯ КАТЕГОРИЯ."
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "category_name": "Обувь",
+      "category_description": "В данную категорию можно добавлять обувь любого вида, как классическую, так и спортивную"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "Тапочки Gucci",
+      "description": "Фирменные тапочки гучи из Казахстана и Армении",
+      "image": "",
+      "category": 3,
+      "price": 200.0,
+      "created_at": "2024-10-14",
+      "updated_at": "2024-10-14"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Tecno X3",
+      "description": "Смартфоны фирмы Tecno, новая модель",
+      "image": "",
+      "category": 1,
+      "price": 12000.0,
+      "created_at": "2024-10-14",
+      "updated_at": "2024-10-14"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "name": "Купальник Luis Veton",
+      "description": "Классный купальник для вас",
+      "image": "",
+      "category": 2,
+      "price": 20000.0,
+      "created_at": "2024-09-14",
+      "updated_at": "2024-10-14"
+    }
+  }
+]

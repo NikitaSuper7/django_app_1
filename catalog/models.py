@@ -2,25 +2,53 @@ from django.db import models
 
 # Create your models here.
 
+class Category(models.Model):
+    category_name = models.CharField(max_length=150, verbose_name="Категория", help_text='Введите название категории')
+    category_description = models.TextField(verbose_name="Описание категории", help_text='Введите описание категории')
+
+    def __str__(self):
+        return f"{self.category_name} - {self.category_description}"
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
 class Product(models.Model):
-    name = models.CharField(max_length=150, verbose_name='Наименование')
-    description = models.TextField(verbose_name='Описание')
-    image = models.ImageField(verbose_name='Изображение', width_field=200, height_field=200, help_text='Изображение продукта')
-    category = models.CharField(max_length=100, verbose_name='Категория')
-    price = models.FloatField(verbose_name='Цена')
-    created_at = models.DateField(verbose_name='Дата создания')
-    updated_at = models.DateField(verbose_name='Дата изменения')
+    name = models.CharField(max_length=150, verbose_name="Наименование")
+    description = models.TextField(verbose_name="Описание", blank=True, null=True)
+    image = models.ImageField(
+        upload_to="../media/photos",
+        blank=True,
+        null=True,
+        verbose_name="Изображение",
+        width_field=200,
+        height_field=200,
+        help_text="Загрузите изображение продукта",
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        max_length=100,
+        verbose_name="Категория",
+        blank=True,
+        null=True,
+        related_name="Products",
+        help_text='Выберите категорию продукта'
+    )
+    price = models.FloatField(verbose_name="Цена", help_text='Введите стоимость продукта')
+    created_at = models.DateField(verbose_name="Дата создания", help_text='Введите дату создания продукта')
+    updated_at = models.DateField(verbose_name="Дата изменения", help_text='Введите дату изменения продукта')
 
     def __str__(self):
         return f"{self.name} - {self.description}"
 
     class Meta:
-        verbose_name = 'Продукт'
-        verbose_name_plural = 'Продукты'
+        verbose_name = "Продукт"
+        verbose_name_plural = "Продукты"
+        ordering = ["category", "name", "price"]
 
-class Category(models.Model):
-    category_name = models.CharField(max_length=150, verbose_name='Категория')
-    category_description = models.TextField(verbose_name='Описание категории')
+
+
 
 # Пример моделей
 # class Student(models.Model):
