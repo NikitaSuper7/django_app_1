@@ -17,13 +17,12 @@ class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name="Наименование")
     description = models.TextField(verbose_name="Описание", blank=True, null=True)
     image = models.ImageField(
-        upload_to="../media/photos",
+        upload_to="media/photos",
         blank=True,
         null=True,
         verbose_name="Изображение",
-        width_field=200,
-        height_field=200,
         help_text="Загрузите изображение продукта",
+
     )
     category = models.ForeignKey(
         Category,
