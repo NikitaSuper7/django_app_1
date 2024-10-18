@@ -1,10 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from catalog.models import Product, Category
 
 
 def main_page(request):
     """Рендерит главную страницу"""
-    return render(request, template_name="catalog/main_page.html")
+    products = Product.objects.all()
+    context = {
+        'products': products
+    }
+
+    return render(request, template_name='catalog/main_page.html', context=context)
 
 
 def catalog(request):
@@ -14,20 +20,29 @@ def catalog(request):
 
 def category(request):
     """Рендерит страницу категорий"""
-    return render(request, template_name="catalog/category_page.html")
+    categories = Category.objects.all()
+    context = {
+        'categories': categories
+    }
 
+    return render(request, template_name='catalog/category_page.html', context=context)
 
-# def pages(request):
-#     """Перелючает страницы"""
-#     if request.method == 'GET':
-#         if request.GET.get('page') == 'main':
-#             main_page(request)
-#         elif request.GET.get('page') == 'contacts':
-#             contact(request)
-#         elif request.GET.get('page') == 'category':
-#             category(request)
-#         elif request.GET.get('page') == 'catalog':
-#             catalog(request)
+def index(request):
+    product = Product.objects.get(id=1)
+    context = {
+        'product_name': f"{product.name}",
+        'product_price': f"Стоимость продукта - {product.price}",
+    }
+    return render(request, template_name='catalog/index.html', context=context)
+
+def category_list(request):
+    categoryies = Category.objects.all()
+
+    context = {
+        'categories': categoryies
+    }
+    return render(request, template_name='catalog/category_list.html', context=context)
+
 
 
 def contact(request):
@@ -41,3 +56,13 @@ def contact(request):
         )
     # Чтобы приложение не падало в ошибку, возвращаем рендер нашего шаблона.
     return render(request, "catalog/contacts.html")
+
+def product_details(request, product_id):
+    """Отображает продукт по его ID"""
+    product = Product.objects.get(id=product_id)
+    context = {
+        'product': product
+    }
+
+    return render(request, template_name='catalog/product_info.html', context=context)
+
