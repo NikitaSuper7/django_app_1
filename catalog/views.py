@@ -4,17 +4,17 @@ from django.http import HttpResponse
 
 def main_page(request):
     """Рендерит главную страницу"""
-    return render(request, template_name='catalog/main_page.html')
+    return render(request, template_name="catalog/main_page.html")
 
 
 def catalog(request):
     """Рендерит страницу каталога"""
-    return render(request, template_name='catalog/catalog.html')
+    return render(request, template_name="catalog/catalog.html")
 
 
 def category(request):
     """Рендерит страницу категорий"""
-    return render(request, template_name='catalog/category_page.html')
+    return render(request, template_name="catalog/category_page.html")
 
 
 # def pages(request):
@@ -36,6 +36,8 @@ def contact(request):
         name = request.POST.get("name")
         email = request.POST.get("email")
 
-        return HttpResponse(f"Спасибо {name.title()}, вы успешно зарегестрированы с почтой -\n'{email}'.")
+        return HttpResponse(
+            f"Спасибо {name.title()}, вы успешно зарегестрированы с почтой -\n'{email}'."
+        )
     # Чтобы приложение не падало в ошибку, возвращаем рендер нашего шаблона.
     return render(request, "catalog/contacts.html")
