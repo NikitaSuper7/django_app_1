@@ -1,6 +1,6 @@
 {% extends 'catalog/base.html' %}
 
-{% block title%} Страница категорий {% endblock %}
+{% block title%} Добавление продукта {% endblock %}
 {% block content %}
 
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
@@ -11,7 +11,7 @@
             <span class="fs-4">Меню</span>
         </a>
         <hr>
-           <ul class="nav nav-pills flex-column mb-auto">
+        <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
                 <a href="/catalog/main_page/" class="nav-link text-white" aria-current="page">
                     <svg class="bi me-2" width="16" height="16">
@@ -37,7 +37,7 @@
                 </a>
             </li>
             <li>
-                <a href="/catalog/contacts/" class="nav-link active">
+                <a href="/catalog/contacts/" class="nav-link text-white">
                     <svg class="bi me-2" width="16" height="16">
                         <use xlink:href="#people-circle"/>
                     </svg>
@@ -45,7 +45,7 @@
                 </a>
             </li>
             <li>
-                <a href="/catalog/add_products/" class="nav-link text-white">
+                <a href="/catalog/add_products/" class="nav-link active">
                     <svg class="bi me-2" width="16" height="16">
                         <use xlink:href="#toggles2"/>
                     </svg>
@@ -75,8 +75,8 @@
     <div class="container">
         <header>
             <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-                <h3 class="display-5 fw-normal text-body-emphasis">Контакты</h3>
-                <p class="fs-5 text-body-secondary">Вы находитесь на странице Контактов</p>
+                <h1 class="display-5 fw-normal text-body-emphasis">Добавление продуктов</h1>
+                <p class="fs-5 text-body-secondary">Здесь вы можете добавить свой продукт</p>
             </div>
         </header>
 
@@ -86,17 +86,66 @@
                 <div class="col-6">
                     <div class="card">
                         <div class="card-body">
-                            <form method="post" action="">
+                            <form method="post" action="" enctype="multipart/form-data">
                                 {% csrf_token %}
+                              <h4 class="mb-4">Форма для добавления продукта</h4>
                               <div class="mb-1">
-                                <label for="email_1" class="form-label">Email address</label>
-                                <input name="email" type="email" class="form-control" id="email_1" aria-describedby="emailHelp">
+<!--                                <label for="product_name" class="form-label">Название</label>-->
+                                <input name="product_name" type="text" class="form-control" id="product_name" placeholder="Название продукта">
                               </div>
                               <div class="mb-2">
-                                <label for="name_1" class="form-label">Имя</label>
-                                <input name="name" type="name" class="form-control" id="name_1">
+                                <select class="form-select" aria-label="Default select example" name="category_name">
+
+                                  <option selected>Выберите категорию</option>
+                                    {% for category in categories %}
+                                      <option value="{{ category.category_name }}">{{ category.category_name }}</option>
+<!--                                      <option value="2">Two</option>-->
+<!--                                      <option value="3">Three</option>-->
+                                    {% endfor %}
+                                </select>
                               </div>
-                              <button type="submit" class="btn w-100 btn-primary">Отправить</button>
+                              <div class="mb-2">
+<!--                                <label for="category_name" class="form-label">Категория</label>-->
+                                <input name="product_price" type="number" class="form-control" id="product_price" placeholder="Стоимость продукта">
+                              </div>
+                              <div class="mb-2">
+<!--                                <label for="category_name" class="form-label">Категория</label>-->
+                                <input name="product_description" type="text" class="form-control" id="product_description" placeholder="Описание продукта">
+                              </div>
+                              <div class="mb-2">
+<!--                                <label for="category_name" class="form-label">Категория</label>-->
+                                <input name="product_created_at" type="date" class="form-control" id="product_created_at" placeholder="Дата создания">
+                              </div>
+
+                              <div class="mb-2">
+<!--                                <label for="category_name" class="form-label">Категория</label>-->
+                                <input name="product_updated_at" type="date" class="form-control" id="product_updated_at" placeholder="Дата изменения (равна дате создания)">
+                              </div>
+                              <div class="mb-2">
+<!--                                  <button type="submit" name="add_product" class="btn w-100 btn-primary mb-2">Отправить</button>-->
+
+<!--                                <label for="category_name" class="form-label">Категория</label>-->
+<!--                                <form method="post" enctype="multipart/form-data">-->
+<!--                                    {% csrf_token %}-->
+                                      <!-- myfile1 - переменная передающееся в Django -->
+                                      <input  type="file" class="form-control mb-2" name="images">
+                                      <button type="submit" name="add_product" class="btn w-100 btn-primary mb-2">Отправить</button>
+<!--                                </form>-->
+                              </div>
+
+
+<!--                            <div class="mb-2">-->
+
+<!--&lt;!&ndash;                                <label for="category_name" class="form-label">Категория</label>&ndash;&gt;-->
+<!--                                <form method="post" enctype="multipart/form-data">-->
+<!--                                    {% csrf_token %}-->
+<!--                                      &lt;!&ndash; myfile1 - переменная передающееся в Django &ndash;&gt;-->
+<!--                                      <input  type="file" class="form-control" name="images">-->
+<!--&lt;!&ndash;                                      <button type="submit">Загрузка</button>&ndash;&gt;-->
+<!--                                </form>-->
+<!--                              </div>-->
+
+
                             </form>
                       </div>
                     </div>
