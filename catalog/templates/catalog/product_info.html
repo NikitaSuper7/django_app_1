@@ -1,6 +1,6 @@
 {% extends 'catalog/base.html' %}
 
-{% block title%} Главная страница {% endblock %}
+{% block title%} Страница категорий {% endblock %}
 {% block content %}
 
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
@@ -44,14 +44,6 @@
                     Контакты
                 </a>
             </li>
-            <li>
-                <a href="/catalog/add_products/" class="nav-link text-white">
-                    <svg class="bi me-2" width="16" height="16">
-                        <use xlink:href="#toggles2"/>
-                    </svg>
-                    Добавление продуктов
-                </a>
-            </li>
         </ul>
         <hr>
         <div class="dropdown">
@@ -75,39 +67,52 @@
     <div class="container">
         <header>
             <div class="pricing-header p-3 pb-md-4 mt-3 mx-auto text-center">
-                <h3 class="display-5 fw-normal text-body-emphasis">Главная</h3>
-                <p class="fs-5 text-body-secondary">Вы находитесь на главной странице</p>
+                <h2 class="display-5 fw-normal text-body-emphasis">Информация о продукте:</h2>
+<!--                <p class="fs-5 text-body-secondary">Вы находитесь на главной странице</p>-->
             </div>
         </header>
 
         <main class="row">
-            <div class="row text-center">
-                {% for product in show_page %}
-                    <div class="col-4 ml-5 mr-5">
-                        <div class="card mb-4 ml-5 rounded-3 shadow-sm">
-                            <div class="card-header py-3">
-                                <h4 class="my-0 fw-normal">{{ product.name }}</h4>
-                            </div>
-                            <div class="card-body">
-                                <h2 class="card-title pricing-card-title">{{ product.price }} $</h2>
-                                <p>
-                                    {{ product.description | truncatechars:35 }}
-                                </p>
-                                <button type="button" class="btn w-100 btn-success">Купить</button>
-                            </div>
+            <div class="row text">
+                <div class="col-12 ml-5 mr-5">
+                    <div class="card mb-4 ml-5 rounded-3 shadow-sm">
+
+                        <div class="card-body">
+<!--                            <h2 class="card-title pricing-card-title">$100</h2>-->
+                            <p>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        Название - {{product.name}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        Цена - {{product.price}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        Категория - {{product.category}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        Описание - {{product.description}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        Дата создания - {{product.created_at | date:"d.m.Y"}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        Дата последнего изменения - {{product.updated_at | date:"d.m.Y"}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        {% if product.image %}
+                                           <p> Изображение - <img src="{{product.image.url}}" class="rounded" style="width: 200px" alt="{{product.name}}"></p>
+                                        {% else %}
+                                            <p>Изображение отсутствует</p>
+                                        {% endif %}
+
+                                    </li>
+                                </ul>
+                            </p>
+<!--                            <button type="button" class="btn w-100 btn-success">Купить</button>-->
                         </div>
                     </div>
-                {% endfor %}
-
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination">
-                    <li class="page-item" ><a name="page"  class="page-link" href="?page=Previous">Previous</a></li>
-                    <li class="page-item"><a name="page" class="page-link" href="?page=1">1</a></li>
-                    <li class="page-item"><a name="page" class="page-link" href="?page=2">2</a></li>
-                    <li class="page-item"><a name="page" class="page-link" href="?page=3">3</a></li>
-                    <li class="page-item"><a name="page" class="page-link" href="?page=Next">Next</a></li>
-                  </ul>
-                </nav>
+                </div>
 
         </main>
 
