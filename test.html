@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Video Player with Fullscreen and Speed Control</title>
+    <style>
+        #video-player {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        #progress-bar {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        button, input[type="range"], select {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="video-player">
+    <video id="video" width="100%">
+        <source src="video.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <div id="controls">
+        <button id="play-pause">Play</button>
+        <button id="rewind">⏪ 10s</button>
+        <button id="forward">⏩ 10s</button>
+        <input type="range" id="progress-bar" min="0" max="100" value="0">
+        <input type="range" id="volume-control" min="0" max="1" step="0.1" value="1">
+        <select id="playback-speed">
+            <option value="0.5">0.5x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+        </select>
+        <button id="fullscreen">Fullscreen</button>
+        <span id="current-time">00:00</span> / <span id="duration">00:00</span>
+    </div>
+</div>
+
+<script>
+    const video = document.getElementById('video');
+    const playPauseButton = document.getElementById('play-pause');
+    const rewindButton = document.getElementById('rewind');
+    const forwardButton = document.getElementById('forward');
+    const progressBar = document.getElementById('progress-bar');
+    const volumeControl = document.getElementById('volume-control');
+    const playbackSpeedControl = document.getElementById('playback-speed');
+    const fullscreenButton = document.getElementById('fullscreen');
+    const currentTimeDisplay = document.getElementById('current-time');
+    const durationDisplay = document.getElementById('duration');
+
+    // Воспроизведение / пауза
+    playPauseButton.addEventListener('click', () => {
+        if (video.paused) {
+            video.play();
+            playPauseButton.textContent = 'Pause';
+        } else {
+            video.pause();
+            playPauseButton.textContent = 'Play';
+        }
+    });
+
+    // Перемотка назад на 10 секунд
+    rewindButton.addEventListener('click', () => {
+        video.currentTime = Math.max(0, video.currentTime - 10);
+    });
+
+    // Перемотка вперед на 10 секунд
+    forwardButton.addEventListener('click', () => {
+        video.currentTime = Math.min(video.duration, video.currentTime + 10);
+    });
+
+    // Обновление прогресс-бара
+    video.addEventListener('timeupdate', () => {
+        const percentage = (video.currentTime / video.duration) * 100;
+        progressBar.value = percentage;
+
+        currentTimeDisplay.textContent = formatTime(video.currentTime);
+        durationDisplay.textContent = formatTime(video.duration);
+    });
+
+    // Изменение прогресса вручную
+    progressBar.addEventListener('input', () => {
+        const time = (progressBar.value / 100) * video.duration;
+        video.currentTime = time;
+    });
+
+    // Изменение громкости
+    volumeControl.addEventListener('input', () => {
+        video.volume = volumeControl.value;
+    });
+
+    // Регулировка скорости воспроизведения
+    playbackSpeedControl.addEventListener('change', () => {
+        video.playbackRate = playbackSpeedControl.value;
+    });
+
+    // Переход в полноэкранный режим
+    fullscreenButton.addEventListener('click', () => {
+        if (video.requestFullscreen) {
+            video.requestFullscreen();
+        } else if (video.mozRequestFullScreen) { // Firefox
+            video.mozRequestFullScreen();
+        } else if (video.webkitRequestFullscreen) { // Chrome, Safari and Opera
+            video.webkitRequestFullscreen();
+        } else if (video.msRequestFullscreen) { // IE/Edge
+            video.msRequestFullscreen();
+        }
+    });
+
+    // Форматирование времени
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secondsLeft = Math.floor(seconds % 60);
+        return `${minutes.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+    }
+
+    // Обновление продолжительности после загрузки метаданных
+    video.addEventListener('loadedmetadata', () => {
+        durationDisplay.textContent = formatTime(video.duration);
+    });
+</script>
+
+</body>
+</html>

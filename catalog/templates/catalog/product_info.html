@@ -2,6 +2,30 @@
 
 {% block title%} Страница категорий {% endblock %}
 {% block content %}
+    <style>
+        #video-player {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        #progress-bar {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        button, input[type="range"] {
+            margin: 0 5px;
+        }
+    </style>
 
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
@@ -107,15 +131,25 @@
                                         {% endif %}
 
                                     </li>
+                                    <li class="list-group-item">
+                                        {% if product.videos %}
+                                           <p> Видео - <video src="{{product.videos.url}}" class="object-fit-scale" controls style="width: 200px"></video>
+                                        {% else %}
+                                            <p>Видео отсутствует</p>
+                                        {% endif %}
+
+                                    </li>
                                 </ul>
                             </p>
 <!--                            <button type="button" class="btn w-100 btn-success">Купить</button>-->
                         </div>
                     </div>
+
                 </div>
 
         </main>
 
     </div>
+
 
 {% endblock %}

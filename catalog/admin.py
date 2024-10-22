@@ -4,7 +4,7 @@ from .models import Product, Category
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "price", "category", 'image')
+    list_display = ("id", "name", "price", "category", 'image', 'videos')
     list_filter = ("category",)
     search_fields = ("name", "description",)
     delete_confirmation_template = True
