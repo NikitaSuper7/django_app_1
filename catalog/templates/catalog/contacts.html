@@ -86,8 +86,9 @@
                 <div class="col-6">
                     <div class="card">
                         <div class="card-body">
-                            <form method="post" action="">
+                            <form method="post">
                                 {% csrf_token %}
+<!--                                {{ form.as_p }}-->
                               <div class="mb-1">
                                 <label for="email_1" class="form-label">Email address</label>
                                 <input name="email" type="email" class="form-control" id="email_1" aria-describedby="emailHelp">
@@ -96,7 +97,7 @@
                                 <label for="name_1" class="form-label">Имя</label>
                                 <input name="name" type="name" class="form-control" id="name_1">
                               </div>
-                              <button type="submit" class="btn w-100 btn-primary">Отправить</button>
+                              <button type="submit" class="btn w-100 btn-primary" >Отправить</button>
                             </form>
                       </div>
                     </div>

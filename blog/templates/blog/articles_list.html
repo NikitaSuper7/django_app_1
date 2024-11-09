@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+
+{% block title%} Список статей {% endblock %}
+
+{% block content %}
+{% include 'blog/header.html' %}
+<h2 class="mt-4">Список книг</h2>
+    <ul class="list-group mb-5">
+        {% for article in articles %}
+            <li class="list-group-item mr-4">
+                <a href="{% url 'blog:article_detail' article.pk %}">{{ article.title }}</a> - {{ article.created_at | date:"d.m.Y" }} | Просмотров - {{ article.views_counter }}
+<!--                <p>Просмотров - {{ article.views_counter }}</p>-->
+            </li>
+        {% endfor %}
+
+    </ul>
+{% endblock %}

@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class Category(models.Model):
@@ -12,6 +13,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+
 
 class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name="Наименование")
@@ -35,8 +37,12 @@ class Product(models.Model):
         help_text='Выберите категорию продукта'
     )
     price = models.FloatField(verbose_name="Цена", help_text='Введите стоимость продукта')
-    created_at = models.DateField(verbose_name="Дата создания", help_text='Введите дату создания продукта')
-    updated_at = models.DateField(verbose_name="Дата изменения", help_text='Введите дату изменения продукта')
+    created_at = models.DateField(verbose_name="Дата создания", help_text='Введите дату создания продукта',
+                                  auto_now_add=True)
+    updated_at = models.DateField(verbose_name="Дата изменения", help_text='Введите дату изменения продукта',
+                                  auto_now=True)
+    videos = models.FileField(upload_to='media/videos', verbose_name="Видео", null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.name} - {self.description}"
@@ -45,9 +51,6 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["category", "name", "price"]
-
-
-
 
 # Пример моделей
 # class Student(models.Model):

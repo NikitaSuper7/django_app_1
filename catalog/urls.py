@@ -8,14 +8,15 @@ from django.conf.urls.static import static
 app_name = CatalogConfig.name
 
 urlpatterns = [
-    path("contacts/", views.contact, name="contacts"),
-    path("main_page/", views.main_page, name="main_page"),
-    path("catalog/", views.catalog, name="catalog"),
-    path("category/", views.category, name="category"),
+    path("contacts/", views.ContactsTemplateView.as_view(), name="contacts"),
+    path("main_page/", views.MainView.as_view(), name="main_page"),
+    path("catalog/", views.CatalogView.as_view(), name="catalog"),
+    path("category/", views.CategoryView.as_view(), name="category"),
+    path("success/", views.SuccesTemplateView.as_view(), name='success'),
     # path('pages/', views.pages, name='pages')
-    path('category_list/', views.category_list, name='categories_lists'),
-    path('product_info/<int:product_id>', views.product_details, name='product_details'),
-    path('add_products/', views.add_products, name='add_products'),
+    # path('category_list/', views.category_list, name='categories_lists'),
+    path('product_info/<int:pk>', views.ProductDetailView.as_view(), name='product_details'),
+    path('add_products/', views.ProductCreateView.as_view(), name='add_products'),
     # path('success/', views.success, name='success')
 ]
 if settings.DEBUG:
