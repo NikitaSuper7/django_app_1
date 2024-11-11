@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse,  Http404
 from catalog.models import Product, Category
 from django.views.generic import ListView, DetailView, TemplateView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+import os
+from .forms import ProductForm
 
-# from .forms import ProductForm
 last_page = 1
 
 
@@ -138,21 +138,78 @@ class ProductDetailView(DetailView):
     context_object_name = 'product'
 
 
-# def product_details(request, product_id):
-#     """Отображает продукт по его ID"""
-#     product = Product.objects.get(id=product_id)
-#     context = {
-#         'product': product
-#     }
-#
-#     return render(request, template_name='catalog/product_info.html', context=context)
+
+
+class VideoView(DetailView):
+    model = Product
+    template_name = 'catalog/product_info_test.html'
+    context_object_name = 'video'
+    def get(self, request, *args, **kwargs):
+        # Получаем объект видео
+        self.object = self.get_object()
+        file_path = self.object.videos.path
+
+        # Проверка существования файла
+        if not os.path.exists(file_path):
+            raise Http404("Видео не найдено")
+
+        # Получаем заголовок Range для поддержки перемотки
+        range_header = request.headers.get('Range')
+        if not range_header:
+            return HttpResponse(open(file_path, 'rb'), content_type='video/mp4')
+
+        # Обрабатываем заголовок Range
+        start, end = range_header.replace("bytes=", "").split("-")
+        file_size = os.path.getsize(file_path)
+        start = int(start) if start else 0
+        end = int(end) if end else file_size - 1
+
+        # Ограничиваем диапазон, чтобы избежать выхода за границы файла
+        end = min(end, file_size - 1)
+        length = end - start + 1
+
+        # Чтение и отправка нужного сегмента видео
+        with open(file_path, 'rb') as f:
+            f.seek(start)
+            data = f.read(length)
+            response = HttpResponse(data, status=206, content_type='video/mp4')
+            response['Content-Range'] = f'bytes {start}-{end}/{file_size}'
+            response['Accept-Ranges'] = 'bytes'
+            response['Content-Length'] = str(length)
+        return response
+
+
+    # def product_details(request, product_id):
+    #     """Отображает продукт по его ID"""
+    #     product = Product.objects.get(id=product_id)
+    #     context = {
+    #         'product': product
+    #     }
+    #
+    #     return render(request, template_name='catalog/product_info.html', context=context)
 
 class ProductCreateView(CreateView):
     model = Product
-    fields = ['name', 'description', 'image', 'category', 'price', 'videos']
+    form_class = ProductForm
+    # fields = ['name', 'description', 'image', 'category', 'price', 'videos']
     template_name = 'catalog/add_products.html'
     context_object_name = 'product'
     success_url = reverse_lazy('catalog:success')
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    # fields = ['name', 'description', 'image', 'category', 'price', 'videos']
+    template_name = 'catalog/add_products.html'
+    success_url = reverse_lazy('catalog:main_page')
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'catalog/product_confirm_delete.html'
+    success_url = reverse_lazy('catalog:main_page')
+    context_object_name = 'product'
+
+    #render(request, 'catalog/product_info.html', {'video_instance': video_instance})
 
 # def add_products(request):
 #     """Пример контроллера, обрабатывающий POST-запрос."""

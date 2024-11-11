@@ -88,7 +88,8 @@
                                 <p>
                                     {{ product.description | truncatechars:35 }}
                                 </p>
-                                <button type="button" class="btn w-100 btn-success">Купить</button>
+                                <button type="button" class="btn w-45 btn-success">Купить</button>
+                                <a href="{% url 'catalog:product_details' product.pk %}" class="btn w-45 btn-secondary">Просмотреть</a>
                             </div>
                         </div>
                     </div>

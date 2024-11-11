@@ -101,65 +101,12 @@
                 <div class="col-12 ml-5 mr-5">
                     <div class="card mb-4 ml-5 rounded-3 shadow-sm">
 
-                        <div class="card-body">
-<!--                            <h2 class="card-title pricing-card-title">$100</h2>-->
-                            <p>
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        Название - {{product.name}}
-                                    </li>
-                                    <li class="list-group-item">
-                                        Цена - {{product.price}}
-                                    </li>
-                                    <li class="list-group-item">
-                                        Категория - {{product.category}}
-                                    </li>
-                                    <li class="list-group-item">
-                                        Описание - {{product.description}}
-                                    </li>
-                                    <li class="list-group-item">
-                                        Дата создания - {{product.created_at | date:"d.m.Y"}}
-                                    </li>
-                                    <li class="list-group-item">
-                                        Дата последнего изменения - {{product.updated_at | date:"d.m.Y"}}
-                                    </li>
-                                    <li class="list-group-item">
-                                        {% if product.image %}
-                                           <p> Изображение - <img src="{{product.image.url}}" class="rounded" style="width: 200px" alt="{{product.name}}"></p>
-                                        {% else %}
-                                            <p>Изображение отсутствует</p>
-                                        {% endif %}
-
-                                    </li>
-                                    <li class="list-group-item">
-                                        {% if product.videos %}
-                                           <p> Видео -
-<!--                                               <a href="{% url 'catalog:video_stream' product.pk %}">Видос</a>-->
-
-                                               <video controls class="object-fit-scale"  style="width: 200px">
-                                                    <source src="{% url 'catalog:video_stream' product.pk %}" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-
-                                        {% else %}
-                                            <p>Видео отсутствует</p>
-
-                                        {% endif %}
-
-
-
-
-                                    </li>
-                                </ul>
-                            </p>
-<!--                            <button type="button" class="btn w-100 btn-success">Купить</button>-->
-                        </div>
+                        <video controls class="object-fit-fill border rounded" style="width-200">
+                            <source src="{% url 'catalog:video_stream' video_instance.id %}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
 
-                </div>
-                <div class="card-body">
-                    <a href="{% url 'catalog:update_product' product.pk %}" class="btn m-1 w-45 btn-warning">Редактировать</a>
-                    <a href="{% url 'catalog:delete_product' product.pk %}" class="btn m-1 w-45 btn-danger">Удалить</a>
                 </div>
 
         </main>

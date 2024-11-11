@@ -88,68 +88,9 @@
                         <div class="card-body">
                             <form method="post" action="" enctype="multipart/form-data">
                                 {% csrf_token %}
+                                {{form.non_field_errors}}
                                 {{ form.as_p }}
-<!--                                {% for field in form %}-->
-<!--                                <p>{{field}}</p>-->
-<!--                                {% endfor %}-->
-<!--                              <h4 class="mb-4">Форма для добавления продукта</h4>-->
-<!--                              <div class="mb-1">-->
-<!--&lt;!&ndash;                                <label for="product_name" class="form-label">Название</label>&ndash;&gt;-->
-<!--                                <input name="product_name" type="text" class="form-control" id="product_name" placeholder="Название продукта">-->
-<!--                              </div>-->
-<!--                              <div class="mb-2">-->
-<!--                                <select class="form-select" aria-label="Default select example" name="category_name">-->
-
-<!--                                  <option selected>Выберите категорию</option>-->
-<!--                                    {% for category in categories %}-->
-<!--                                      <option value="{{ category.category_name }}">{{ category.category_name }}</option>-->
-<!--&lt;!&ndash;                                      <option value="2">Two</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                                      <option value="3">Three</option>&ndash;&gt;-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
-<!--                              </div>-->
-<!--                              <div class="mb-2">-->
-<!--&lt;!&ndash;                                <label for="category_name" class="form-label">Категория</label>&ndash;&gt;-->
-<!--                                <input name="product_price" type="number" class="form-control" id="product_price" placeholder="Стоимость продукта">-->
-<!--                              </div>-->
-<!--                              <div class="mb-2">-->
-<!--&lt;!&ndash;                                <label for="category_name" class="form-label">Категория</label>&ndash;&gt;-->
-<!--                                <input name="product_description" type="text" class="form-control" id="product_description" placeholder="Описание продукта">-->
-<!--                              </div>-->
-<!--                              <div class="mb-2">-->
-<!--                                <label for="product_created_at" class="form-label">Дата создания</label>-->
-<!--                                <input name="product_created_at" type="date" class="form-control" id="product_created_at" placeholder="Дата создания">-->
-<!--                              </div>-->
-
-<!--                              <div class="mb-2">-->
-<!--                                <label for="product_updated_at" class="form-label">Дата изменения (При создании равна дате создания)</label>-->
-<!--                                <input name="product_updated_at" type="date" class="form-control" id="product_updated_at" placeholder="Дата изменения (равна дате создания)">-->
-<!--                              </div>-->
-<!--                              <div class="mb-2">-->
-<!--&lt;!&ndash;                                  <button type="submit" name="add_product" class="btn w-100 btn-primary mb-2">Отправить</button>&ndash;&gt;-->
-
-<!--&lt;!&ndash;                                <label for="category_name" class="form-label">Категория</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <form method="post" enctype="multipart/form-data">&ndash;&gt;-->
-<!--&lt;!&ndash;                                    {% csrf_token %}&ndash;&gt;-->
-<!--                                      &lt;!&ndash; myfile1 - переменная передающееся в Django &ndash;&gt;-->
-<!--                                      <input  type="file" class="form-control mb-2" name="images">-->
-                                      <button type="submit" name="add_product" class="btn w-100 btn-primary mb-2">Отправить</button>
-<!--                                </form>-->
-<!--                              </div>-->
-
-
-<!--                            <div class="mb-2">-->
-
-<!--&lt;!&ndash;                                <label for="category_name" class="form-label">Категория</label>&ndash;&gt;-->
-<!--                                <form method="post" enctype="multipart/form-data">-->
-<!--                                    {% csrf_token %}-->
-<!--                                      &lt;!&ndash; myfile1 - переменная передающееся в Django &ndash;&gt;-->
-<!--                                      <input  type="file" class="form-control" name="images">-->
-<!--&lt;!&ndash;                                      <button type="submit">Загрузка</button>&ndash;&gt;-->
-<!--                                </form>-->
-<!--                              </div>-->
-
-
+                                <button type="submit" name="add_product" class="btn w-100 btn-primary mb-2">Отправить</button>
                             </form>
                       </div>
                     </div>
