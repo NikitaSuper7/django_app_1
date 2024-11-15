@@ -53,20 +53,39 @@
             </li>
         </ul>
         <hr>
+<!--        <div class="dropdown">-->
+<!--            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"-->
+<!--               id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--&lt;!&ndash;                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">&ndash;&gt;-->
+<!--                <strong>Пользователь</strong>-->
+<!--            </a>-->
+<!--            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">-->
+<!--                <li><a class="dropdown-item" href="#">Профиль</a></li>-->
+<!--                <li>-->
+<!--                    <hr class="dropdown-divider">-->
+<!--                </li>-->
+<!--                <li><a class="dropdown-item" href="#">Выход</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+           {% if user.is_authenticated %}
         <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-               id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>Пользователь</strong>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" href="#">Профиль</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Выход</a></li>
-            </ul>
+            <select class="form-select" aria-label="Default select example">
+              <option selected>Пользователь</option>
+<!--              <option value="1">Вход</option>-->
+              <option value="2">Выход</option>
+<!--              <option value="3">Регистрация</option>-->
+            </select>
         </div>
+        {% else %}
+        <div class="dropdown">
+            <select class="form-select" aria-label="Default select example">
+<!--              <option selected>Пользователь</option>-->
+              <option value="1">Вход</option>
+<!--              <option value="2">Выход</option>-->
+              <option value="3">Регистрация</option>
+            </select>
+        </div>
+        {% endif %}
     </div>
 
     <div class="b-example-divider"></div>

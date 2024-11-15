@@ -5,11 +5,12 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 import os
 from .forms import ProductForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 last_page = 1
 
 
-class MainView(ListView):
+class MainView(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'catalog/main_page.html'
     context_object_name = 'products'
@@ -75,7 +76,7 @@ class MainView(ListView):
 #     return render(request, template_name='catalog/main_page.html', context=context)
 
 
-class CatalogView(ListView):
+class CatalogView(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'catalog/catalog.html'
 
@@ -132,7 +133,7 @@ class SuccesTemplateView(TemplateView):
 #     return render(request, "catalog/contacts.html")
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = 'catalog/product_info.html'
     context_object_name = 'product'
@@ -140,7 +141,7 @@ class ProductDetailView(DetailView):
 
 
 
-class VideoView(DetailView):
+class VideoView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = 'catalog/product_info_test.html'
     context_object_name = 'video'
@@ -188,7 +189,7 @@ class VideoView(DetailView):
     #
     #     return render(request, template_name='catalog/product_info.html', context=context)
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     # fields = ['name', 'description', 'image', 'category', 'price', 'videos']
@@ -196,14 +197,14 @@ class ProductCreateView(CreateView):
     context_object_name = 'product'
     success_url = reverse_lazy('catalog:success')
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     # fields = ['name', 'description', 'image', 'category', 'price', 'videos']
     template_name = 'catalog/add_products.html'
     success_url = reverse_lazy('catalog:main_page')
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('catalog:main_page')

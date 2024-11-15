@@ -54,20 +54,39 @@
             </li>
         </ul>
         <hr>
+<!--        <div class="dropdown">-->
+<!--            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"-->
+<!--               id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">-->
+<!--                <strong>Пользователь</strong>-->
+<!--            </a>-->
+<!--            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">-->
+<!--                <li><a class="dropdown-item" href="#">Профиль</a></li>-->
+<!--                <li>-->
+<!--                    <hr class="dropdown-divider">-->
+<!--                </li>-->
+<!--                <li><a class="dropdown-item" href="#">Выход</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+           {% if user.is_authenticated %}
         <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-               id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>Пользователь</strong>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" href="#">Профиль</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Выход</a></li>
-            </ul>
+            <select class="form-select" aria-label="Default select example">
+              <option selected>Пользователь</option>
+<!--              <option value="1">Вход</option>-->
+              <option value="2">Выход</option>
+<!--              <option value="3">Регистрация</option>-->
+            </select>
         </div>
+        {% else %}
+        <div class="dropdown">
+            <select class="form-select" aria-label="Default select example">
+<!--              <option selected>Пользователь</option>-->
+              <option value="1">Вход</option>
+<!--              <option value="2">Выход</option>-->
+              <option value="3">Регистрация</option>
+            </select>
+        </div>
+        {% endif %}
     </div>
 
     <div class="b-example-divider"></div>
@@ -86,13 +105,52 @@
                 <div class="col-6">
                     <div class="card">
                         <div class="card-body">
-                            <form method="post" action="" enctype="multipart/form-data">
+
+                            <form class="row m-1" method="post" action="" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{form.non_field_errors}}
-                                {{ form.as_p }}
+                               <p>
+                                   {{ form.name }}
+                                    {% if form.name.errors %}
+                                           <small class="text-danger">{{ form.name.errors.0 }}</small>
+                                    {% endif %}
+                               </p>
+
+                               <p>
+                                   {{ form.description }}
+                                    {% if form.description.errors %}
+                                           <small class="text-danger">{{ form.description.errors.0 }}</small>
+                                    {% endif %}
+                                </p>
+                                <p>
+                                    {{ form.category }}
+                                    {% if form.category.errors %}
+                                           <small class="text-danger">{{ form.category.errors.0 }}</small>
+                                    {% endif %}
+                                </p>
+                                <p>
+                                   {{ form.price }}
+                                    {% if form.price.errors %}
+                                           <small class="text-danger">{{ form.price.errors.0 }}</small>
+                                    {% endif %}
+                                </p>
+                                <p>
+                                    {{ form.image }}
+                                    {% if form.image.errors %}
+                                           <small class="text-danger">{{ form.image.errors.0 }}</small>
+                                    {% endif %}
+                                </p>
+                                <p>
+                                    {{ form.videos }}
+                                    {% if form.videos.errors %}
+                                           <small class="text-danger">{{ form.videos.errors.0 }}</small>
+                                    {% endif %}
+                                 </p>
                                 <button type="submit" name="add_product" class="btn w-100 btn-primary mb-2">Отправить</button>
                             </form>
                       </div>
+
+
                     </div>
                 </div>
 
