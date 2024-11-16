@@ -70,20 +70,39 @@
             </li>
         </ul>
         <hr>
+<!--        <div class="dropdown">-->
+<!--            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"-->
+<!--               id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">-->
+<!--                <strong>Пользователь</strong>-->
+<!--            </a>-->
+<!--            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">-->
+<!--                <li><a class="dropdown-item" href="#">Профиль</a></li>-->
+<!--                <li>-->
+<!--                    <hr class="dropdown-divider">-->
+<!--                </li>-->
+<!--                <li><a class="dropdown-item" href="#">Выход</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+           {% if user.is_authenticated %}
         <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-               id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>Пользователь</strong>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" href="#">Профиль</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Выход</a></li>
-            </ul>
+            <select class="form-select" aria-label="Default select example">
+              <option selected>Пользователь</option>
+<!--              <option value="1">Вход</option>-->
+              <option value="2">Выход</option>
+<!--              <option value="3">Регистрация</option>-->
+            </select>
         </div>
+        {% else %}
+        <div class="dropdown">
+            <select class="form-select" aria-label="Default select example">
+<!--              <option selected>Пользователь</option>-->
+              <option value="1">Вход</option>
+<!--              <option value="2">Выход</option>-->
+              <option value="3">Регистрация</option>
+            </select>
+        </div>
+        {% endif %}
     </div>
 
     <div class="b-example-divider"></div>
@@ -133,10 +152,21 @@
                                     </li>
                                     <li class="list-group-item">
                                         {% if product.videos %}
-                                           <p> Видео - <video src="{{product.videos.url}}" class="object-fit-scale" controls style="width: 200px"></video>
+                                           <p> Видео -
+<!--                                               <a href="{% url 'catalog:video_stream' product.pk %}">Видос</a>-->
+
+                                               <video controls class="object-fit-scale"  style="width: 200px">
+                                                    <source src="{% url 'catalog:video_stream' product.pk %}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+
                                         {% else %}
                                             <p>Видео отсутствует</p>
+
                                         {% endif %}
+
+
+
 
                                     </li>
                                 </ul>
@@ -145,6 +175,10 @@
                         </div>
                     </div>
 
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'catalog:update_product' product.pk %}" class="btn m-1 w-45 btn-warning">Редактировать</a>
+                    <a href="{% url 'catalog:delete_product' product.pk %}" class="btn m-1 w-45 btn-danger">Удалить</a>
                 </div>
 
         </main>

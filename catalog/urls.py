@@ -15,8 +15,11 @@ urlpatterns = [
     path("success/", views.SuccesTemplateView.as_view(), name='success'),
     # path('pages/', views.pages, name='pages')
     # path('category_list/', views.category_list, name='categories_lists'),
-    path('product_info/<int:pk>', views.ProductDetailView.as_view(), name='product_details'),
+    path('product_info/<int:pk>/', views.ProductDetailView.as_view(), name='product_details'),
     path('add_products/', views.ProductCreateView.as_view(), name='add_products'),
+    path('product_info_test/<int:pk>/', views.VideoView.as_view(), name='video_stream'),
+    path("product_info/update/<int:pk>/", views.ProductUpdateView.as_view(), name="update_product"),
+    path("product_info/delete/<int:pk>/", views.ProductDeleteView.as_view(), name="delete_product"),
     # path('success/', views.success, name='success')
 ]
 if settings.DEBUG:
