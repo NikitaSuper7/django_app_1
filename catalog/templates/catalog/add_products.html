@@ -105,7 +105,7 @@
                 <div class="col-6">
                     <div class="card">
                         <div class="card-body">
-
+                            {% if user.is_authenticated %}
                             <form class="row m-1" method="post" action="" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{form.non_field_errors}}
@@ -146,10 +146,21 @@
                                            <small class="text-danger">{{ form.videos.errors.0 }}</small>
                                     {% endif %}
                                  </p>
-                                <button type="submit" name="add_product" class="btn w-100 btn-primary mb-2">Отправить</button>
+                                {% if perms.catalog.can_unpublish_product %}
+                                    <p> Товар опубликован?
+                                        {{ form.is_published }}
+                                        {% if form.is_published.errors %}
+                                               <small class="text-danger">{{ form.is_published.errors.0 }}</small>
+                                        {% endif %}
+                                     </p>
+                                {% endif %}
+                                <button type="submit" name="add_product" class="btn w-100 btn-primary mb-2">Создать продукт</button>
                             </form>
+                            {% else %}
+                            <p>Вы не авторизованы и не можете добавлять продукт</p>
+                            <a href="{% url 'users:login'%}" class="btn w-45 btn-warning">Зарегистрироваться</a>
+                            {% endif %}
                       </div>
-
 
                     </div>
                 </div>
