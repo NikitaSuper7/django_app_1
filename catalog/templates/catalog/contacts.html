@@ -68,23 +68,26 @@
 <!--                <li><a class="dropdown-item" href="#">Выход</a></li>-->
 <!--            </ul>-->
 <!--        </div>-->
-           {% if user.is_authenticated %}
-        <div class="dropdown">
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Пользователь</option>
-<!--              <option value="1">Вход</option>-->
-              <option value="2">Выход</option>
-<!--              <option value="3">Регистрация</option>-->
-            </select>
-        </div>
+            {% if user.is_authenticated %}
+        <form method="post" action="{% url 'users:logout' %}" style="display: inline">
+            {% csrf_token %}
+          <button class="btn btn-secondary" type="submit" aria-expanded="false">
+            Выход
+          </button>
+
+        </form>
         {% else %}
         <div class="dropdown">
-            <select class="form-select" aria-label="Default select example">
-<!--              <option selected>Пользователь</option>-->
-              <option value="1">Вход</option>
-<!--              <option value="2">Выход</option>-->
-              <option value="3">Регистрация</option>
-            </select>
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Действия
+          </button>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li><a class="dropdown-item" href="{% url 'users:login' %}">Вход</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:register' %}">Регистрация</a></li>
+<!--            <li><a class="dropdown-item" href="#">Something else here</a></li>-->
+<!--            <li><hr class="dropdown-divider"></li>-->
+<!--            <li><a class="dropdown-item" href="#">Separated link</a></li>-->
+          </ul>
         </div>
         {% endif %}
     </div>
