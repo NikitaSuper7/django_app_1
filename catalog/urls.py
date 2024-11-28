@@ -20,6 +20,7 @@ urlpatterns = [
     path('product_info_test/<int:pk>/', views.VideoView.as_view(), name='video_stream'),
     path("product_info/update/<int:pk>/", views.ProductUpdateView.as_view(), name="update_product"),
     path("product_info/delete/<int:pk>/", views.ProductDeleteView.as_view(), name="delete_product"),
+    path("category/<int:pk>/", views.CategryProductListView.as_view(), name="category_product"),
     # path('success/', views.success, name='success')
 ]
 if settings.DEBUG:

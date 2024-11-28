@@ -1,18 +1,19 @@
 {% extends 'catalog/base.html' %}
 
-{% block title%} Страница категорий {% endblock %}
+{% block title%} Главная страница {% endblock %}
 {% block content %}
+
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <svg class="bi me-2" width="40" height="32">
-                <use xlink:href="#bootstrap"/>
+                <use xlink:href="#"/>
             </svg>
             <span class="fs-4">Меню</span>
         </a>
         <hr>
-           <ul class="nav nav-pills flex-column mb-auto">
+        <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-                <a href="/catalog/main_page/" class="nav-link text-white" aria-current="page">
+                <a href="/catalog/main_page/" class="nav-link active" aria-current="page">
                     <svg class="bi me-2" width="16" height="16">
                         <use xlink:href="#home"/>
                     </svg>
@@ -20,7 +21,7 @@
                 </a>
             </li>
             <li>
-                <a href="/catalog/category/" class="nav-link active">
+                <a href="/catalog/category/" class="nav-link text-white">
                     <svg class="bi me-2" width="16" height="16">
                         <use xlink:href="#speedometer2"/>
                     </svg>
@@ -53,21 +54,7 @@
             </li>
         </ul>
         <hr>
-<!--        <div class="dropdown">-->
-<!--            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"-->
-<!--               id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--&lt;!&ndash;                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">&ndash;&gt;-->
-<!--                <strong>Пользователь</strong>-->
-<!--            </a>-->
-<!--            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">-->
-<!--                <li><a class="dropdown-item" href="#">Профиль</a></li>-->
-<!--                <li>-->
-<!--                    <hr class="dropdown-divider">-->
-<!--                </li>-->
-<!--                <li><a class="dropdown-item" href="#">Выход</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
- {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
         <form method="post" action="{% url 'users:logout' %}" style="display: inline">
             {% csrf_token %}
           <button class="btn btn-secondary" type="submit" aria-expanded="false">
@@ -96,33 +83,41 @@
     <div class="container">
         <header>
             <div class="pricing-header p-3 pb-md-4 mt-3 mx-auto text-center">
-                <h3 class="display-5 fw-normal text-body-emphasis">Категория 1</h3>
-                <p class="fs-5 text-body-secondary">Вы находитесь на странице категорий</p>
+                <h3 class="display-5 fw-normal text-body-emphasis">Продукты категории</h3>
+                <p class="fs-5 text-body-secondary">Вы находитесь на странице продуктов категории</p>
             </div>
         </header>
 
         <main class="row">
             <div class="row text-center">
-                {% for category in categories %}
-                    <div class="col-4 ml-5 mt-2">
-                        <div class="card mb-4 ml-5 rounded-3 shadow-sm" style="width: 18rem;">
+                <p>{{ last_page }}</p>
+                {% for product in products %}
+                    <div class="col-4 ml-5 mr-5">
+                        <div class="card mb-4 ml-5 rounded-3 shadow-sm">
                             <div class="card-header py-3">
-                                <h4 class="my-0 fw-normal">{{category.category_name|title}}</h4>
+                                <h4 class="my-0 fw-normal">{{ product.name }}</h4>
                             </div>
                             <div class="card-body">
+                                <h2 class="card-title pricing-card-title">{{ product.price }} $</h2>
                                 <p>
-                                    {{category.category_description | truncatechars:100}}
+                                    {{ product.description | truncatechars:35 }}
                                 </p>
-<!--                                <button type="button" class="btn w-100 btn-success">Перейти в категорию</button>-->
-                                <a href="{% url 'catalog:category_product' category.pk %}" class="btn w-100 btn-success">
-                                    Перейти в категорию
-                                </a>
+                                <button type="button" class="btn w-45 btn-success">Купить</button>
+                                <a href="{% url 'catalog:product_details' product.pk %}" class="btn w-45 btn-secondary">Просмотреть</a>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
 
-
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <li class="page-item" ><a name="page"  class="page-link" href="?page=Previous">Previous</a></li>
+                    <li class="page-item"><a name="page" class="page-link" href="?page=1">1</a></li>
+                    <li class="page-item"><a name="page" class="page-link" href="?page=2">2</a></li>
+                    <li class="page-item"><a name="page" class="page-link" href="?page=3">3</a></li>
+                    <li class="page-item"><a name="page" class="page-link" href="?page=Next">Next</a></li>
+                  </ul>
+                </nav>
 
         </main>
 

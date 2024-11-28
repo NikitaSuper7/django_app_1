@@ -10,6 +10,16 @@ from .forms import ProductForm, ProductModeratorForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 
+# Для кеширования страниц:
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
+# Для низкоуровневого кеширования:
+from django.core.cache import cache
+
+#Сервисный функционал:
+from .services import ProductServices
+
 last_page = 1
 
 
@@ -17,6 +27,14 @@ class MainView(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'catalog/main_page.html'
     context_object_name = 'products'
+
+    def get_queryset(self):
+        queryset = cache.get('products_queryset')
+
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('products_queryset', queryset, 60 * 15)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -40,9 +58,21 @@ class MainView(LoginRequiredMixin, ListView):
                 context_data['products'] = context_data['products'][int(last_page) - 1]
             else:
                 context_data['products'] = context_data['products'][1]
-            # print(f"Page - {page}")
-        print(f"Длина контекста - {len(context_data['products'])}")
-        print(context_data)
+        #     # print(f"Page - {page}")
+        # print(f"Длина контекста - {len(context_data['products'])}")
+        # print(context_data)
+        return context_data
+
+class CategryProductListView(LoginRequiredMixin, DetailView):
+    model = Category
+    template_name = 'catalog/prod_category.html'
+    context_object_name = 'category'
+
+    def get_context_data(self,  **kwargs):
+        context_data = super().get_context_data()
+        category = self.object.pk
+        # products = Product.objects.filter(category=category)
+        context_data['products'] = ProductServices.category_products(category_pk=category)
         return context_data
 
 
@@ -135,7 +165,7 @@ class SuccesTemplateView(TemplateView):
 #     # Чтобы приложение не падало в ошибку, возвращаем рендер нашего шаблона.
 #     return render(request, "catalog/contacts.html")
 
-
+@method_decorator(cache_page(16 * 15), name='dispatch')
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = 'catalog/product_info.html'
@@ -250,6 +280,10 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
 
         # Если пользователь не авторизован для удаления
         raise PermissionDenied("Вы не можете удалять этот продукт")
+
+
+
+
 
     # render(request, 'catalog/product_info.html', {'video_instance': video_instance})
 
