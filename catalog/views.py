@@ -1,11 +1,14 @@
-from django.http import HttpResponse,  Http404
+from django.http import HttpResponse, Http404, HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect
+
 from catalog.models import Product, Category
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 import os
-from .forms import ProductForm
+from .forms import ProductForm, ProductModeratorForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 
 last_page = 1
 
@@ -104,6 +107,7 @@ class CategoryView(ListView):
 
 class ContactsTemplateView(TemplateView):
     template_name = "catalog/contacts.html"
+
     def post(self, request, *args, **kwargs):
         if self.request.method == 'POST':
             name = self.request.POST.get('name')
@@ -111,13 +115,12 @@ class ContactsTemplateView(TemplateView):
             print(f'Вы успешно зарегестрированы {name}({email})')
 
             return HttpResponse(
-                        f"Спасибо {name.title()}, вы успешно зарегестрированы с почтой -\n'{email}'."
-                    )
-
+                f"Спасибо {name.title()}, вы успешно зарегестрированы с почтой -\n'{email}'."
+            )
 
 
 class SuccesTemplateView(TemplateView):
-    template_name = "catalog/success_reg.html"
+    template_name = "catalog/success.html"
 
 
 # def contact(request):
@@ -139,12 +142,11 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'product'
 
 
-
-
 class VideoView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = 'catalog/product_info_test.html'
     context_object_name = 'video'
+
     def get(self, request, *args, **kwargs):
         # Получаем объект видео
         self.object = self.get_object()
@@ -179,7 +181,6 @@ class VideoView(LoginRequiredMixin, DetailView):
             response['Content-Length'] = str(length)
         return response
 
-
     # def product_details(request, product_id):
     #     """Отображает продукт по его ID"""
     #     product = Product.objects.get(id=product_id)
@@ -189,6 +190,7 @@ class VideoView(LoginRequiredMixin, DetailView):
     #
     #     return render(request, template_name='catalog/product_info.html', context=context)
 
+
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
@@ -197,6 +199,14 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     context_object_name = 'product'
     success_url = reverse_lazy('catalog:success')
 
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.owner = user
+        product.save()
+        return super().form_valid(form)
+
+
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
@@ -204,13 +214,44 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'catalog/add_products.html'
     success_url = reverse_lazy('catalog:main_page')
 
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.request.user == self.object.owner:
+            self.object.save()
+            return self.object
+        raise PermissionDenied
+
+    def get_form_class(self):
+        user = self.request.user
+
+        if user.has_perm("catalog.can_unpublish_product"):
+            return ProductModeratorForm
+
+        else:
+            return ProductForm
+
+
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('catalog:main_page')
     context_object_name = 'product'
 
-    #render(request, 'catalog/product_info.html', {'video_instance': video_instance})
+    def get_object(self, queryset=None):
+        """
+        Переопределяем метод get_object для проверки доступа.
+        """
+        product = super().get_object(queryset)
+        user = self.request.user
+
+        # Проверяем, является ли пользователь владельцем или имеет нужное разрешение
+        if product.owner == user or user.has_perm('catalog.can_delete_product'):
+            return product
+
+        # Если пользователь не авторизован для удаления
+        raise PermissionDenied("Вы не можете удалять этот продукт")
+
+    # render(request, 'catalog/product_info.html', {'video_instance': video_instance})
 
 # def add_products(request):
 #     """Пример контроллера, обрабатывающий POST-запрос."""
